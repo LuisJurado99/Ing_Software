@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -44,6 +45,7 @@ public class index extends javax.swing.JFrame {
         txtPassword = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setText("User:");
 
@@ -110,36 +112,28 @@ public class index extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIngresarPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarPrincipalActionPerformed
         int id_sup=0;
         String password;
+        supervisorframe supervisor = new supervisorframe();
         try {
             PreparedStatement ps;
-            ResultSet res;
-            
-            int usuario = Integer.parseInt(getUser.getText());
-            String pass = txtPassword.getText();
-            System.out.println("Usuario: " +usuario);                        
-            System.out.println("Pass: "  +pass);
-            
-            ps = con.prepareStatement("SELECT * FROM supervisor");
-            res = ps.executeQuery();
-                
-            if(res.next()){
-                ps = con.prepareStatement("SELECT nombre FROM supervisor where id_sup = "+getUser.getText()+" and password = "+txtPassword.getText());
-                res = ps.executeQuery();
-            
-                String nombre_sup = res.getString("nombre");
-                System.out.println(nombre_sup);
-                /*id_sup=res.getInt("id_sup"); //Base de datos
-                password = res.getString("password"); //Base de datos
-                System.out.println("password:"+password); 
-                System.out.println("id_sup"+ id_sup);
-                if (pass.equals(password) && usuario==id_sup) {
-                    System.out.println("Si entra");
-                }*/
+            ResultSet rs;
+            ps= con.prepareStatement("SELECT nombre FROM supervisor WHERE id_sup = ? and password = ?");
+            ps.setString(1, getUser.getText());
+            ps.setString(2,txtPassword.getText() );
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                JOptionPane.showMessageDialog(null, "Bienvenido: "+rs.getString("nombre"));
+                supervisor.setVisible(true);
+                this.dispose();
+            }else{
+                JOptionPane.showMessageDialog(null, "Acceso Denegado");
+                txtPassword.setText("");
+                getUser.setText("");
             }
         }catch (SQLException ex) {
             Logger.getLogger(index.class.getName()).log(Level.SEVERE, null, ex);
