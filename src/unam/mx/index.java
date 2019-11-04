@@ -25,7 +25,15 @@ public class index extends javax.swing.JFrame {
     public index() {
         initComponents();
     }
-    
+    private String contraseña_global;
+
+    public String getContraseña_global() {
+        return contraseña_global;
+    }
+
+    public void setContraseña_global(String contraseña_global) {
+        this.contraseña_global = contraseña_global;
+    }
     
     
     /**
@@ -116,8 +124,6 @@ public class index extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIngresarPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarPrincipalActionPerformed
-        int id_sup=0;
-        String password;
         supervisorframe supervisor = new supervisorframe();
         try {
             PreparedStatement ps;
@@ -125,8 +131,10 @@ public class index extends javax.swing.JFrame {
             ps= con.prepareStatement("SELECT nombre FROM supervisor WHERE id_sup = ? and password = ?");
             ps.setString(1, getUser.getText());
             ps.setString(2,txtPassword.getText() );
+            
             rs = ps.executeQuery();
             if (rs.next()) {
+                contraseña_global = txtPassword.getText();
                 JOptionPane.showMessageDialog(null, "Bienvenido: "+rs.getString("nombre"));
                 supervisor.setVisible(true);
                 this.dispose();

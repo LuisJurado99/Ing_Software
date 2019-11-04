@@ -8,6 +8,10 @@ package unam.mx;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -15,6 +19,7 @@ import java.sql.ResultSet;
  */
 public class Altas extends javax.swing.JFrame {
     Connection con=app.conex.getConection();
+    
     /**
      * Creates new form Altas
      */
@@ -39,6 +44,7 @@ public class Altas extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         cbxPuesto = new javax.swing.JComboBox<>();
         btnGuardar = new javax.swing.JButton();
+        btnSalir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -66,13 +72,20 @@ public class Altas extends javax.swing.JFrame {
             }
         });
 
+        btnSalir.setText("Salir");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(47, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel3)
@@ -84,8 +97,9 @@ public class Altas extends javax.swing.JFrame {
                             .addComponent(txtApellido)
                             .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnSalir)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnGuardar)))
                 .addGap(25, 25, 25))
         );
@@ -104,9 +118,15 @@ public class Altas extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(cbxPuesto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
-                .addComponent(btnGuardar)
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(btnGuardar)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                        .addComponent(btnSalir)
+                        .addGap(38, 38, 38))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -129,20 +149,82 @@ public class Altas extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbxPuestoActionPerformed
 
+    public int getLastPass() throws SQLException{
+        PreparedStatement ps0;
+        ResultSet rs0;
+        int pass = 0;
+        
+        ps0 = con.prepareStatement("SELECT MAX(id_capt) FROM capturador");
+        rs0 = ps0.executeQuery();
+        
+        if (rs0.next()) {
+            pass = Integer.parseInt(rs0.getString(WIDTH));
+            pass += 1;
+        }
+        return pass;
+    }
+    public String getContraseña(){
+        String principal = new index().getContraseña_global();
+        return principal;
+    }
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        String opcioncbx =  cbxPuesto.getName();
+        String opcioncbx =  cbxPuesto.getSelectedItem().toString();
         PreparedStatement ps;
         ResultSet rs;
+        
         try {
             if (opcioncbx.equals("Recepcionista")) {
-                ps = con.prepareStatement("INSERT INTO recepcion (nombre, apellido, salario, password, estatus )VALUES (? , ?, ?, ?, ?)");
+                ps = con.prepareStatement("INSERT INTO recepcion (nombre, apellido, salario, estatus )VALUES (? , ?, ?, ?)");
+                ps.setString(1, txtNombre.getText().toUpperCase());
+                ps.setString(2, txtApellido.getText().toUpperCase());
+                ps.setFloat(3, (float) 5000.0);
+                ps.setBoolean(4,true );
+                String contraseña_temp=JOptionPane.showInputDialog("Ingresa Contraseña para Confirmar");
+                System.out.println(""+contraseña_temp);
+                System.out.println(""+getContraseña());
+                if (getContraseña()== contraseña_temp){
+                    //ps.executeUpdate();
+                    //JOptionPane.showMessageDialog(null, "Usuario Registrado");
+                    txtNombre.setText("");
+                    txtApellido.setText("");
+                }else{
+                    //JOptionPane.showMessageDialog(null, "Usuario NO Registrado");
+                }
+                
+                
                 
             }else if(opcioncbx.equals("Capturador")){
+                ps = con.prepareStatement("INSERT INTO capturador (nombre, apellido, salario, password, estatus )VALUES (? , ?, ?, ?, ?)");
+                ps.setString(1, txtNombre.getText().toUpperCase());
+                ps.setString(2, txtApellido.getText().toUpperCase());
+                ps.setFloat(3, (float) 3500.0);
+                ps.setString(4,getLastPass()+"_"+txtApellido.getText().toLowerCase());
+                ps.setBoolean(5,true );
+                JOptionPane.showMessageDialog(null,"Usuario Registrado \n Contraseña: "+getLastPass()+"_"+txtApellido.getText().toLowerCase());
+                String contraseña_temp=JOptionPane.showInputDialog("Ingresa Contraseña para Confirmar");
+                if (getContraseña()== contraseña_temp){
+                    ps.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "Usuario Registrado");
+                    txtNombre.setText("");
+                    txtApellido.setText("");
+                }else{
+                    JOptionPane.showMessageDialog(null, "Usuario NO Registrado");
+                }
+                
                 
             }
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No dio :(");
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        
+            index principal = new index();
+            principal.setVisible(true);
+            this.dispose();
+        
+    }//GEN-LAST:event_btnSalirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -181,6 +263,7 @@ public class Altas extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnSalir;
     private javax.swing.JComboBox<String> cbxPuesto;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

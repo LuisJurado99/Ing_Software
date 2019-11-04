@@ -44,7 +44,7 @@ public class conex {
         try{
             Class.forName("com.mysql.jdbc.Driver");
             con =(Connection)DriverManager.getConnection(URL,USERNAME, PASSWORD);
-            JOptionPane.showMessageDialog(null, "Conexion Segura");
+            System.out.println("conecta chido");
         }catch(Exception e){
             System.out.println("Error:"+e);
                 
