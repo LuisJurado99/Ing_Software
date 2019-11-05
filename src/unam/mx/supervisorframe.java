@@ -5,6 +5,8 @@
  */
 package unam.mx;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author luisj
@@ -33,19 +35,36 @@ public class supervisorframe extends javax.swing.JFrame {
         btnBonos = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         btnAltas = new javax.swing.JButton();
+        jcbPersonal = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        btnModificar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(350, 300));
 
-        btnAsistencia.setText("Asistencia");
+        jPanel1.setEnabled(false);
+        jPanel1.setPreferredSize(new java.awt.Dimension(350, 300));
+
+        btnAsistencia.setText("Control");
         btnAsistencia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAsistenciaActionPerformed(evt);
             }
         });
 
-        btnControl.setText("Control");
+        btnControl.setText("Asistencias");
+        btnControl.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnControlActionPerformed(evt);
+            }
+        });
 
         btnBonos.setText("Bonos");
+        btnBonos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBonosActionPerformed(evt);
+            }
+        });
 
         btnSalir.setText("Salir");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
@@ -61,29 +80,57 @@ public class supervisorframe extends javax.swing.JFrame {
             }
         });
 
+        jcbPersonal.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar", "Capturador", "Recepcion" }));
+        jcbPersonal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbPersonalActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Area A Observar");
+
+        btnModificar.setText("Modificar");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(35, 35, 35)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnBonos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAsistencia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnControl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAltas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(83, 83, 83))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnModificar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(38, 38, 38)
+                        .addComponent(jcbPersonal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnBonos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnAsistencia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnControl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnAltas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(83, 83, 83))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(42, 42, 42)
+                .addGap(10, 10, 10)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jcbPersonal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAsistencia)
                     .addComponent(btnControl))
@@ -92,44 +139,108 @@ public class supervisorframe extends javax.swing.JFrame {
                     .addComponent(btnBonos)
                     .addComponent(btnAltas))
                 .addGap(18, 18, 18)
-                .addComponent(btnSalir)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSalir)
+                    .addComponent(btnModificar))
+                .addContainerGap(126, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(136, 136, 136))
+                .addGap(0, 150, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(83, 83, 83))
+                .addGap(0, 12, Short.MAX_VALUE))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnAltasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAltasActionPerformed
+        String btcombx = (String)jcbPersonal.getSelectedItem() ;
+        if (btcombx.equals("Capturador")){
+            AltasCapturador alta = new AltasCapturador();
+            alta.setVisible(true);
+            this.dispose();
+        }else if(btcombx.equals("Recepcion")){
+            AltasRecepcion alta = new AltasRecepcion();
+            alta.setVisible(true);
+            this.dispose();
+        }else if (btcombx.equals("Seleccionar")) {
+                JOptionPane.showMessageDialog(null, "Debes Seleccionar Un Campo");
+        }
+        
+    }//GEN-LAST:event_btnAltasActionPerformed
+
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-        System.exit(0);
+        indextwo ind = new indextwo();
+        ind.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
-    private void btnAsistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsistenciaActionPerformed
+    private void btnControlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnControlActionPerformed
+        String btcombx = (String)jcbPersonal.getSelectedItem() ;
+        if (btcombx.equals("Capturador")){
+            asistenciascapturador control = new asistenciascapturador();
+            control.setVisible(true);
+            this.dispose();
+        }else if(btcombx.equals("Recepcion")){
+            asistenciasrecepcion control = new asistenciasrecepcion();
+            control.setVisible(true);
+            this.dispose();
+        } else if (btcombx.equals("Seleccionar")) {
+            JOptionPane.showMessageDialog(null, "Seleciona Un Campo");
+        }
         
+    }//GEN-LAST:event_btnControlActionPerformed
+
+    private void btnAsistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsistenciaActionPerformed
+           String btcombx = (String)jcbPersonal.getSelectedItem() ;
+        if (btcombx.equals("Capturador")){ 
+            controlusuarioscap asistencia = new controlusuarioscap();
+            asistencia.setVisible(true);
+            this.dispose();
+        }else if(btcombx.equals("Recepcion")){
+            controlusuariosrecp asistencia = new controlusuariosrecp();
+            asistencia.setVisible(true);
+            this.dispose();
+        }else if (btcombx.equals("Seleccionar")) {
+            JOptionPane.showMessageDialog(null, "Seleciona Un Campo");
+        }
     }//GEN-LAST:event_btnAsistenciaActionPerformed
 
-    private void btnAltasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAltasActionPerformed
-        Altas alta = new Altas();
-        alta.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnAltasActionPerformed
+    private void jcbPersonalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbPersonalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jcbPersonalActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        String btcombx = (String) jcbPersonal.getSelectedItem();
+        if(btcombx.equals("Capturador")){
+            modificarcapturador captmod = new modificarcapturador();
+            captmod.setVisible(true);
+            this.dispose();
+        }else if (btcombx.equals("Recepcion")) {
+            modificarrecepcion modto = new modificarrecepcion();
+            modto.setVisible(true);
+            this.dispose();
+        }else if (btcombx.equals("Seleccionar")) {
+            JOptionPane.showMessageDialog(null, "Selecciona Un Campo");
+        }
+ 
+        
+    }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void btnBonosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBonosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBonosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -171,7 +282,10 @@ public class supervisorframe extends javax.swing.JFrame {
     private javax.swing.JButton btnAsistencia;
     private javax.swing.JButton btnBonos;
     private javax.swing.JButton btnControl;
+    private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnSalir;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JComboBox<String> jcbPersonal;
     // End of variables declaration//GEN-END:variables
 }
