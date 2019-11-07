@@ -29,7 +29,7 @@ public class controlusuarioscap extends javax.swing.JFrame {
             PreparedStatement ps;
             ResultSet rs;
             
-            String sql_capturador = "SELECT id_capt, nombre, apellido, asistencia, estatus FROM capturador ";
+            String sql_capturador = "SELECT id_capt, nombre, apellido, asistencia, faltas, estatus FROM capturador ";
             ps = con.prepareStatement(sql_capturador);
             rs = ps.executeQuery();
             ResultSetMetaData rSMd = rs.getMetaData();
@@ -38,6 +38,7 @@ public class controlusuarioscap extends javax.swing.JFrame {
             modelo.addColumn("NOMBRE");
             modelo.addColumn("APELLIDO");
             modelo.addColumn("ASIS");
+            modelo.addColumn("FALTAS");
             modelo.addColumn("ESTATUS");
             while(rs.next()){
                 Object[] filas  = new Object[cantidadcolumnas];
@@ -68,22 +69,22 @@ public class controlusuarioscap extends javax.swing.JFrame {
         btnRegresar = new javax.swing.JButton();
 
         setIconImages(null);
-        setMaximumSize(new java.awt.Dimension(450, 350));
-        setPreferredSize(new java.awt.Dimension(450, 350));
+        setMaximumSize(new java.awt.Dimension(650, 350));
+        setPreferredSize(new java.awt.Dimension(650, 350));
 
         jtAsistencia.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Nombre", "Apellido", "Asistencia", "Estatus"
+                "ID", "Nombre", "Apellido", "Asistencia", "Faltas", "Estatus"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Boolean.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -101,9 +102,8 @@ public class controlusuarioscap extends javax.swing.JFrame {
             jtAsistencia.getColumnModel().getColumn(1).setResizable(false);
             jtAsistencia.getColumnModel().getColumn(2).setResizable(false);
             jtAsistencia.getColumnModel().getColumn(3).setResizable(false);
-            jtAsistencia.getColumnModel().getColumn(4).setResizable(false);
+            jtAsistencia.getColumnModel().getColumn(5).setResizable(false);
         }
-        jtAsistencia.getAccessibleContext().setAccessibleParent(null);
 
         jButton1.setText("Buscar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -132,14 +132,14 @@ public class controlusuarioscap extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 565, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnRegresar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
-                        .addComponent(jButton1))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 63, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1)))
+                .addGap(0, 21, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

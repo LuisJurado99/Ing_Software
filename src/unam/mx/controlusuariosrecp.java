@@ -28,7 +28,7 @@ public class controlusuariosrecp extends javax.swing.JFrame {
             jtAsistencia.setModel(modelo);
             PreparedStatement ps;
             ResultSet rs;
-            String sql_recepcion = "SELECT id_recp, nombre, apellido, asistencia, estatus FROM recepcion ";
+            String sql_recepcion = "SELECT id_recp, nombre, apellido, asistencia, faltas, estatus FROM recepcion ";
             ps = con.prepareStatement(sql_recepcion);
             rs = ps.executeQuery();
             ResultSetMetaData rSMd = rs.getMetaData();
@@ -39,6 +39,7 @@ public class controlusuariosrecp extends javax.swing.JFrame {
             modelo.addColumn("NOMBRE");
             modelo.addColumn("APELLIDO");
             modelo.addColumn("ASIS");
+            modelo.addColumn("FALTAS");
             modelo.addColumn("ESTATUS");
             while(rs.next()){
                 Object[] filas  = new Object[cantidadcolumnas];
@@ -70,25 +71,23 @@ public class controlusuariosrecp extends javax.swing.JFrame {
         btnRegresar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(450, 350));
-        setPreferredSize(new java.awt.Dimension(450, 350));
 
-        jPanel1.setMaximumSize(new java.awt.Dimension(400, 300));
-        jPanel1.setPreferredSize(new java.awt.Dimension(410, 310));
+        jPanel1.setMaximumSize(new java.awt.Dimension(650, 300));
+        jPanel1.setPreferredSize(new java.awt.Dimension(650, 300));
 
         jtAsistencia.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Nombre", "Apellido", "Asistencia", "Estatus"
+                "ID", "Nombre", "Apellido", "Asistencia", "Faltas", "Estatus"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Boolean.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -106,8 +105,8 @@ public class controlusuariosrecp extends javax.swing.JFrame {
             jtAsistencia.getColumnModel().getColumn(2).setResizable(false);
             jtAsistencia.getColumnModel().getColumn(3).setResizable(false);
             jtAsistencia.getColumnModel().getColumn(4).setResizable(false);
+            jtAsistencia.getColumnModel().getColumn(5).setResizable(false);
         }
-        jtAsistencia.getAccessibleContext().setAccessibleParent(null);
 
         jButton1.setText("Buscar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -127,27 +126,32 @@ public class controlusuariosrecp extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnRegresar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 126, Short.MAX_VALUE)
-                .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
-                .addGap(27, 27, 27))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jScrollPane1)
+                        .addContainerGap())
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnRegresar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 366, Short.MAX_VALUE)
+                        .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1)
+                        .addGap(27, 27, 27))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(13, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1)
                     .addComponent(btnRegresar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

@@ -67,6 +67,7 @@ public class modificarrecepcion extends javax.swing.JFrame {
     private void initComponents() {
 
         grupobotones = new javax.swing.ButtonGroup();
+        jTextField1 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtModificar = new javax.swing.JTable();
         txtNombre = new javax.swing.JTextField();
@@ -80,8 +81,12 @@ public class modificarrecepcion extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         txtid = new javax.swing.JTextField();
         btnRegresar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+
+        jTextField1.setText("jTextField1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(730, 380));
 
         jtModificar.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -107,6 +112,7 @@ public class modificarrecepcion extends javax.swing.JFrame {
 
         jLabel3.setText("Asistencia");
 
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/unam/imagenes/guardar_icon.png"))); // NOI18N
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -127,12 +133,15 @@ public class modificarrecepcion extends javax.swing.JFrame {
 
         txtid.setEditable(false);
 
+        btnRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/unam/imagenes/atras_icon.png"))); // NOI18N
         btnRegresar.setText("Regresar");
         btnRegresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegresarActionPerformed(evt);
             }
         });
+
+        jButton1.setText("Registrar Asistencia");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -141,9 +150,7 @@ public class modificarrecepcion extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnRegresar)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(btnRegresar)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,21 +167,22 @@ public class modificarrecepcion extends javax.swing.JFrame {
                                     .addComponent(txtApellido, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(btnAsistencia, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtid, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))
-                                .addGap(0, 137, Short.MAX_VALUE))
+                                    .addComponent(txtid, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(132, 132, 132)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                                 .addComponent(btnGuardar)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton1)))))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(7, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnRegresar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel4)
                             .addComponent(txtid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -190,20 +198,17 @@ public class modificarrecepcion extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(41, 41, 41))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(btnAsistencia)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnFalta)
-                                .addGap(18, 18, 18)))
-                        .addComponent(btnGuardar)
-                        .addGap(55, 55, 55))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(17, 17, 17))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel3)
+                            .addComponent(btnAsistencia))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnFalta)
+                        .addGap(15, 15, 15)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnGuardar)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(73, 73, 73))
         );
 
         pack();
@@ -216,16 +221,16 @@ public class modificarrecepcion extends javax.swing.JFrame {
         try {
             ps = con.prepareStatement("UPDATE recepion SET nombre=?, apellido=? WHERE id_recp=?");
 
-            ps.setString(1, txtNombre.getText());
-            ps.setString(2, txtApellido.getText());
+            ps.setString(1, txtNombre.getText().toUpperCase());
+            ps.setString(2, txtApellido.getText().toUpperCase());
             ps.setString(3, txtid.getText());
             
 
             ps.execute();
 
             JOptionPane.showMessageDialog(null, "Producto Modificado");
-            jtModificar.setValueAt(txtNombre.getText(), Fila, 1);
-            jtModificar.setValueAt(txtApellido.getText(), Fila, 2);
+            jtModificar.setValueAt(txtNombre.getText().toUpperCase(), Fila, 1);
+            jtModificar.setValueAt(txtApellido.getText().toUpperCase(), Fila, 2);
             txtApellido.setText("");
             txtNombre.setText("");
             txtid.setText("");
@@ -311,11 +316,13 @@ public class modificarrecepcion extends javax.swing.JFrame {
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnRegresar;
     private javax.swing.ButtonGroup grupobotones;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JTable jtModificar;
     private javax.swing.JTextField txtApellido;
     private javax.swing.JTextField txtNombre;

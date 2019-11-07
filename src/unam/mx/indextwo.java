@@ -37,9 +37,9 @@ public class indextwo extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         txtUsuario = new javax.swing.JTextField();
-        txtContraseña = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        txtPass = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(350, 300));
@@ -71,6 +71,12 @@ public class indextwo extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(jButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 166, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(26, 26, 26))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(68, 68, 68)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -78,15 +84,9 @@ public class indextwo extends javax.swing.JFrame {
                     .addComponent(jLabel2))
                 .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtContraseña, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
-                    .addComponent(txtUsuario))
+                    .addComponent(txtPass)
+                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 166, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(26, 26, 26))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -95,11 +95,11 @@ public class indextwo extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(23, 23, 23)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(39, 39, 39)
+                    .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
@@ -135,7 +135,7 @@ public class indextwo extends javax.swing.JFrame {
             ResultSet rs;
             ps= con.prepareStatement("SELECT nombre FROM supervisor WHERE id_sup = ? and password = ?");
             ps.setString(1, txtUsuario.getText());
-            ps.setString(2,txtContraseña.getText() );
+            ps.setString(2,txtPass.getText() );
             rs = ps.executeQuery();
             
             if (rs.next()) {
@@ -146,7 +146,7 @@ public class indextwo extends javax.swing.JFrame {
             }else{
                 ps= con.prepareStatement("SELECT nombre FROM capturador WHERE id_capt = ? and password = ?");
                 ps.setString(1, txtUsuario.getText());
-                ps.setString(2,txtContraseña.getText() );
+                ps.setString(2,txtPass.getText() );
                 rs = ps.executeQuery();
                 if (rs.next()){
                     JOptionPane.showMessageDialog(null, "Bienvenido:"+rs.getString("nombre") );
@@ -154,7 +154,7 @@ public class indextwo extends javax.swing.JFrame {
                     this.dispose();
                 }else{
                     JOptionPane.showMessageDialog(null, "Acceso Denegado");
-                    txtContraseña.setText("");
+                    txtPass.setText("");
                     txtUsuario.setText("");
                 }
                 
@@ -209,7 +209,7 @@ public class indextwo extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField txtContraseña;
+    private javax.swing.JPasswordField txtPass;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }
