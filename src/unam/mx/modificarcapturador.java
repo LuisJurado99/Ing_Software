@@ -15,6 +15,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 /**
  *
@@ -22,6 +26,11 @@ import javax.swing.table.DefaultTableModel;
  */
 public class modificarcapturador extends javax.swing.JFrame {
     Connection con=app.conex.getConection();    
+    int asistencias =10;
+    int faltas=5;
+    DefaultTableModel modelo = new DefaultTableModel();
+    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    Date date = new Date();
     /**
      * Creates new form modificartodos
      */
@@ -53,6 +62,7 @@ public class modificarcapturador extends javax.swing.JFrame {
         }catch (SQLException e) {
             System.out.println("Error: "+e);
         }
+        labelHora.setText(dateFormat.format(date));
         grupobotones.add(btnAsistencia);
         grupobotones.add(btnFalta);
         
@@ -82,6 +92,8 @@ public class modificarcapturador extends javax.swing.JFrame {
         txtid = new javax.swing.JTextField();
         btnRegresar = new javax.swing.JButton();
         btnRegistrarAsistenia = new javax.swing.JButton();
+        labelHora = new javax.swing.JLabel();
+        btnBorrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -138,10 +150,19 @@ public class modificarcapturador extends javax.swing.JFrame {
             }
         });
 
+        btnRegistrarAsistenia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/unam/imagenes/comprobado_icon.png"))); // NOI18N
         btnRegistrarAsistenia.setText("Registrar Asistencia");
         btnRegistrarAsistenia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegistrarAsisteniaActionPerformed(evt);
+            }
+        });
+
+        btnBorrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/unam/imagenes/borrar_icon.png"))); // NOI18N
+        btnBorrar.setText("Borrar");
+        btnBorrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBorrarActionPerformed(evt);
             }
         });
 
@@ -152,67 +173,88 @@ public class modificarcapturador extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnRegresar)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(54, 54, 54)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel4))
-                                .addGap(69, 69, 69)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(btnFalta, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtApellido, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnAsistencia, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtid, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(10, 10, 10)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel1)
+                                                    .addComponent(jLabel4)
+                                                    .addComponent(jLabel2)))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jLabel3)))
+                                        .addGap(77, 77, 77))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnModificar)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(btnAsistencia)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(txtid, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(btnFalta))
+                                        .addGap(0, 89, Short.MAX_VALUE))
+                                    .addComponent(btnRegistrarAsistenia, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addContainerGap())
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(30, 30, 30)
-                                .addComponent(btnModificar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnRegistrarAsistenia)))))
-                .addGap(0, 43, Short.MAX_VALUE))
+                                .addGap(120, 120, 120)
+                                .addComponent(btnBorrar)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelHora)
+                            .addComponent(btnRegresar))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(btnRegresar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel4)
-                            .addComponent(txtid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnRegresar)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel4)
+                        .addComponent(txtid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                        .addComponent(labelHora))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(15, 15, 15))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnAsistencia)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnFalta)))
-                        .addGap(32, 32, 32)
+                        .addGap(21, 21, 21)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2)
+                            .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(21, 21, 21)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnRegistrarAsistenia, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnModificar))
-                        .addGap(32, 32, 32))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(23, 23, 23))))
+                            .addComponent(jLabel3)
+                            .addComponent(btnAsistencia))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnFalta))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(33, 33, 33)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(btnModificar)
+                                    .addComponent(btnRegistrarAsistenia, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnBorrar)
+                        .addContainerGap())))
         );
 
         pack();
@@ -253,11 +295,13 @@ public class modificarcapturador extends javax.swing.JFrame {
             int Fila = jtModificar.getSelectedRow();
             String codigo = jtModificar.getValueAt(Fila, 0).toString();
 
-            ps = con.prepareStatement("SELECT id_capt,nombre,apellido FROM capturador WHERE id_capt=?");
+            ps = con.prepareStatement("SELECT id_capt,nombre,apellido, asistencia, faltas FROM capturador WHERE id_capt=?");
             ps.setString(1, codigo);
             rs = ps.executeQuery();
 
             while (rs.next()) {
+                asistencias = rs.getInt("asistencia");
+                faltas = rs.getInt("faltas");
                 txtApellido.setText(rs.getString("apellido"));
                 txtNombre.setText(rs.getString("nombre"));
                 txtid.setText(rs.getString("id_capt"));
@@ -276,17 +320,54 @@ public class modificarcapturador extends javax.swing.JFrame {
 
     private void btnRegistrarAsisteniaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarAsisteniaActionPerformed
         PreparedStatement ps = null;
-        ResultSet rs = null;    
-        String codigo = txtid.getText();
-        try {
-            ps = con.prepareStatement("UPDATE capturador SET nombre=?, apellido=? WHERE id_capt=?");
-            ps.setString(1, codigo);
-            rs = ps.executeQuery();
-        } catch (SQLException ex) {
-            Logger.getLogger(modificarcapturador.class.getName()).log(Level.SEVERE, null, ex);
+           
+        if(btnAsistencia.isSelected()){
+            try {
+                ps = con.prepareStatement("UPDATE capturador SET asistencia = ? WHERE id_capt=?");
+                ps.setInt(1,asistencias+1);
+                ps.setString(2, txtid.getText());
+                ps.execute();
+                JOptionPane.showMessageDialog(null, "Asistencia Actualizada");
+            } catch (SQLException ex) {
+                System.out.println("Error: "+ex);
+            }
+        }
+        if (btnFalta.isSelected()){
+            try {
+                ps = con.prepareStatement("UPDATE capturador SET faltas = ? WHERE id_capt=?");
+                ps.setInt(1,faltas+1);
+                ps.setString(2, txtid.getText());
+                ps.execute();
+                JOptionPane.showMessageDialog(null, "Faltas Actualizada");
+            } catch (SQLException ex) {
+                System.out.println("Error: "+ex);
+            }
+        }
+        if (!btnAsistencia.isSelected() && !btnFalta.isSelected()){
+            JOptionPane.showMessageDialog(null, "No registraste ninguna opcion");
         }
         
+        
     }//GEN-LAST:event_btnRegistrarAsisteniaActionPerformed
+
+    private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
+        PreparedStatement ps = null;
+       
+        int Fila = jtModificar.getSelectedRow();
+        String codigo = jtModificar.getValueAt(Fila, 0).toString();
+        try{
+            ps = con.prepareStatement("DELETE FROM capturador WHERE id_capt=?");
+            ps.setString(1, codigo);
+            ps.execute();
+            modelo.removeRow(Fila);
+            JOptionPane.showMessageDialog(null, "Usuario Eliminado");
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, "No se pudo borrar el elemento ");
+        }
+        txtNombre.setText("");
+        txtApellido.setText("");
+        
+    }//GEN-LAST:event_btnBorrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -328,6 +409,7 @@ public class modificarcapturador extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton btnAsistencia;
+    private javax.swing.JButton btnBorrar;
     private javax.swing.JRadioButton btnFalta;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnRegistrarAsistenia;
@@ -339,6 +421,7 @@ public class modificarcapturador extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jtModificar;
+    private javax.swing.JLabel labelHora;
     private javax.swing.JTextField txtApellido;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtid;

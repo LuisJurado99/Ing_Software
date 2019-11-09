@@ -31,7 +31,6 @@ public class supervisorframe extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         btnAsistencia = new javax.swing.JButton();
-        btnControl = new javax.swing.JButton();
         btnBonos = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         btnAltas = new javax.swing.JButton();
@@ -40,11 +39,11 @@ public class supervisorframe extends javax.swing.JFrame {
         btnModificar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(350, 300));
 
         jPanel1.setEnabled(false);
         jPanel1.setPreferredSize(new java.awt.Dimension(350, 300));
 
+        btnAsistencia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/unam/imagenes/estrella_icon.png"))); // NOI18N
         btnAsistencia.setText("Control");
         btnAsistencia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -52,13 +51,7 @@ public class supervisorframe extends javax.swing.JFrame {
             }
         });
 
-        btnControl.setText("Asistencias");
-        btnControl.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnControlActionPerformed(evt);
-            }
-        });
-
+        btnBonos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/unam/imagenes/estrella_icon.png"))); // NOI18N
         btnBonos.setText("Bonos");
         btnBonos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -74,6 +67,7 @@ public class supervisorframe extends javax.swing.JFrame {
             }
         });
 
+        btnAltas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/unam/imagenes/estrella_icon.png"))); // NOI18N
         btnAltas.setText("Altas");
         btnAltas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -90,6 +84,7 @@ public class supervisorframe extends javax.swing.JFrame {
 
         jLabel1.setText("Area A Observar");
 
+        btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/unam/imagenes/estrella_icon.png"))); // NOI18N
         btnModificar.setText("Modificar");
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -105,24 +100,24 @@ public class supervisorframe extends javax.swing.JFrame {
                 .addGap(35, 35, 35)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnModificar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSalir)
-                        .addGap(27, 27, 27))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(38, 38, 38)
                         .addComponent(jcbPersonal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnBonos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnAsistencia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnControl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnAltas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(83, 83, 83))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(btnSalir))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(btnAsistencia, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+                                    .addComponent(btnBonos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(18, 39, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
+                                    .addComponent(btnAltas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(64, 64, 64))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -134,16 +129,14 @@ public class supervisorframe extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAsistencia)
-                    .addComponent(btnControl))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnBonos)
                     .addComponent(btnAltas))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSalir)
+                    .addComponent(btnBonos)
                     .addComponent(btnModificar))
-                .addContainerGap(110, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                .addComponent(btnSalir)
+                .addGap(29, 29, 29))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -151,7 +144,7 @@ public class supervisorframe extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -186,22 +179,6 @@ public class supervisorframe extends javax.swing.JFrame {
         ind.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
-
-    private void btnControlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnControlActionPerformed
-        String btcombx = (String)jcbPersonal.getSelectedItem() ;
-        if (btcombx.equals("Capturador")){
-            asistenciascapturador control = new asistenciascapturador();
-            control.setVisible(true);
-            this.dispose();
-        }else if(btcombx.equals("Recepcion")){
-            asistenciasrecepcion control = new asistenciasrecepcion();
-            control.setVisible(true);
-            this.dispose();
-        } else if (btcombx.equals("Seleccionar")) {
-            JOptionPane.showMessageDialog(null, "Seleciona Un Campo");
-        }
-        
-    }//GEN-LAST:event_btnControlActionPerformed
 
     private void btnAsistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsistenciaActionPerformed
            String btcombx = (String)jcbPersonal.getSelectedItem() ;
@@ -282,7 +259,6 @@ public class supervisorframe extends javax.swing.JFrame {
     private javax.swing.JButton btnAltas;
     private javax.swing.JButton btnAsistencia;
     private javax.swing.JButton btnBonos;
-    private javax.swing.JButton btnControl;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnSalir;
     private javax.swing.JLabel jLabel1;

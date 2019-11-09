@@ -23,34 +23,7 @@ public class controlusuarioscap extends javax.swing.JFrame {
      */
     public controlusuarioscap() {
         initComponents();
-        try {
-            DefaultTableModel modelo = new DefaultTableModel();
-            jtAsistencia.setModel(modelo);
-            PreparedStatement ps;
-            ResultSet rs;
-            
-            String sql_capturador = "SELECT id_capt, nombre, apellido, asistencia, faltas, estatus FROM capturador ";
-            ps = con.prepareStatement(sql_capturador);
-            rs = ps.executeQuery();
-            ResultSetMetaData rSMd = rs.getMetaData();
-            int cantidadcolumnas = rSMd.getColumnCount();
-            modelo.addColumn("ID");
-            modelo.addColumn("NOMBRE");
-            modelo.addColumn("APELLIDO");
-            modelo.addColumn("ASIS");
-            modelo.addColumn("FALTAS");
-            modelo.addColumn("ESTATUS");
-            while(rs.next()){
-                Object[] filas  = new Object[cantidadcolumnas];
-                for (int i = 0; i < cantidadcolumnas; i++) {
-                    filas[i] = rs.getObject(i+1);
-                }
-                modelo.addRow(filas);
-            }
-            
-        } catch (SQLException e) {
-            System.out.println("Error: "+e);
-        }
+        cargarTabla();
     }
 
     /**
@@ -64,13 +37,11 @@ public class controlusuarioscap extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jtAsistencia = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        btnBuscar = new javax.swing.JButton();
         txtBusqueda = new javax.swing.JTextField();
         btnRegresar = new javax.swing.JButton();
 
         setIconImages(null);
-        setMaximumSize(new java.awt.Dimension(650, 350));
-        setPreferredSize(new java.awt.Dimension(650, 350));
 
         jtAsistencia.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -105,10 +76,11 @@ public class controlusuarioscap extends javax.swing.JFrame {
             jtAsistencia.getColumnModel().getColumn(5).setResizable(false);
         }
 
-        jButton1.setText("Buscar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/unam/imagenes/busqueda_icon.png"))); // NOI18N
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnBuscarActionPerformed(evt);
             }
         });
 
@@ -118,6 +90,7 @@ public class controlusuarioscap extends javax.swing.JFrame {
             }
         });
 
+        btnRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/unam/imagenes/atras_icon.png"))); // NOI18N
         btnRegresar.setText("Regresar");
         btnRegresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -138,7 +111,7 @@ public class controlusuarioscap extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1)))
+                        .addComponent(btnBuscar)))
                 .addGap(0, 21, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -147,25 +120,56 @@ public class controlusuarioscap extends javax.swing.JFrame {
                 .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1)
+                    .addComponent(btnBuscar)
                     .addComponent(btnRegresar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    private void cargarTabla(){
+        try {
+            DefaultTableModel modelo = new DefaultTableModel();
+            jtAsistencia.setModel(modelo);
+            PreparedStatement ps;
+            ResultSet rs;
+            
+            String sql_capturador = "SELECT id_capt, nombre, apellido, asistencia, faltas, estatus FROM capturador ";
+            ps = con.prepareStatement(sql_capturador);
+            rs = ps.executeQuery();
+            ResultSetMetaData rSMd = rs.getMetaData();
+            int cantidadcolumnas = rSMd.getColumnCount();
+            modelo.addColumn("ID");
+            modelo.addColumn("NOMBRE");
+            modelo.addColumn("APELLIDO");
+            modelo.addColumn("ASIS");
+            modelo.addColumn("FALTAS");
+            modelo.addColumn("ESTATUS");
+            while(rs.next()){
+                Object[] filas  = new Object[cantidadcolumnas];
+                for (int i = 0; i < cantidadcolumnas; i++) {
+                    filas[i] = rs.getObject(i+1);
+                }
+                modelo.addRow(filas);
+            }
+            
+        } catch (SQLException e) {
+            System.out.println("Error: "+e);
+        }
+    }
     private void txtBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBusquedaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtBusquedaActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         String campo = txtBusqueda.getText();
         String where="";
         if (!"".equals(campo)){
             where = "WHERE nombre = '"+campo.toUpperCase()+"'";
+        }else{
+            cargarTabla();
         }
         try{
             DefaultTableModel modelo = new DefaultTableModel();
@@ -194,7 +198,7 @@ public class controlusuarioscap extends javax.swing.JFrame {
         }catch(Exception e ){
                 System.out.println("Error: "+e);
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         supervisorframe superfr = new supervisorframe();
@@ -241,8 +245,8 @@ public class controlusuarioscap extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnRegresar;
-    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jtAsistencia;
     private javax.swing.JTextField txtBusqueda;
