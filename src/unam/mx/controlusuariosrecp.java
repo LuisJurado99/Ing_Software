@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -183,10 +184,12 @@ public class controlusuariosrecp extends javax.swing.JFrame {
                 }
                 modelo.addRow(filas);
             }
+            
         }catch(Exception e ){
                 
         }
     }
+    
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         String campo = txtBusqueda.getText();
         String where="";

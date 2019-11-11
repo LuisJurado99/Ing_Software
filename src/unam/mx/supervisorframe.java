@@ -5,6 +5,7 @@
  */
 package unam.mx;
 
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -231,7 +232,14 @@ public class supervisorframe extends javax.swing.JFrame {
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnBonosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBonosActionPerformed
-        // TODO add your handling code here:
+        try{
+            BonosTodos bonos =  new BonosTodos();
+            bonos.setVisible(true);
+        this.dispose();
+        }catch(SQLException ex){
+            System.out.println(""+ex);
+        }
+        
     }//GEN-LAST:event_btnBonosActionPerformed
 
     /**

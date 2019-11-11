@@ -50,6 +50,8 @@ public class indextwo extends javax.swing.JFrame {
 
         jLabel2.setText("Contraseña");
 
+        txtUsuario.setText("1011");
+
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/unam/imagenes/login_input.png"))); // NOI18N
         jButton1.setText("Ingresar");
         jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -67,6 +69,8 @@ public class indextwo extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
+
+        txtPass.setText("1011_jurado");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

@@ -46,8 +46,8 @@ public class modificarcapturador extends javax.swing.JFrame {
             String sql_capturador = "SELECT id_capt, nombre, apellido, asistencia, estatus FROM capturador";
             ps = con.prepareStatement(sql_capturador);
             rs = ps.executeQuery();
-            ResultSetMetaData rSMd = rs.getMetaData();
-            int cantidadcolumnas = rSMd.getColumnCount();
+            ResultSetMetaData rsMd = rs.getMetaData();
+            int cantidadcolumnas = rsMd.getColumnCount();
             modelo.addColumn("ID");
             modelo.addColumn("NOMBRE");
             modelo.addColumn("APELLIDO");
