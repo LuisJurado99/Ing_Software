@@ -403,7 +403,7 @@ public class modificarcapturador extends javax.swing.JFrame {
             modelo.removeRow(Fila);
             JOptionPane.showMessageDialog(null, "Usuario Eliminado");
         }catch(Exception ex){
-            JOptionPane.showMessageDialog(null, "No se pudo borrar el elemento ");
+            JOptionPane.showMessageDialog(null, "No se pudo eliminar el Usuario ");
         }
         txtNombre.setText("");
         txtApellido.setText("");

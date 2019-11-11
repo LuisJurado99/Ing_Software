@@ -277,14 +277,14 @@ public class modificarrecepcion extends javax.swing.JFrame {
 
             ps.execute();
 
-            JOptionPane.showMessageDialog(null, "Producto Modificado");
+            JOptionPane.showMessageDialog(null, "Datos Guardados");
             jtModificar.setValueAt(txtNombre.getText().toUpperCase(), Fila, 1);
             jtModificar.setValueAt(txtApellido.getText().toUpperCase(), Fila, 2);
             txtApellido.setText("");
             txtNombre.setText("");
             txtid.setText("");
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error al Modificar Producto");
+            JOptionPane.showMessageDialog(null, "Error al Modificar");
             System.out.println(ex);
         }
 
