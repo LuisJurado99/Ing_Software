@@ -10,6 +10,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -18,12 +21,15 @@ import javax.swing.table.DefaultTableModel;
  */
 public class controlusuarioscap extends javax.swing.JFrame {
     Connection con=app.conex.getConection();    
+    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+    Date date = new Date();
     /**
      * Creates new form asistencias
      */
     public controlusuarioscap() {
         initComponents();
         cargarTabla();
+        labelHora.setText(dateFormat.format(date));
     }
 
     /**
@@ -40,6 +46,7 @@ public class controlusuarioscap extends javax.swing.JFrame {
         btnBuscar = new javax.swing.JButton();
         txtBusqueda = new javax.swing.JTextField();
         btnRegresar = new javax.swing.JButton();
+        labelHora = new javax.swing.JLabel();
 
         setIconImages(null);
 
@@ -48,14 +55,14 @@ public class controlusuarioscap extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Nombre", "Apellido", "Asistencia", "Faltas", "Estatus"
+                "ID", "Nombre", "Apellido", "Asistencia", "Faltas", "Estatus", "Bonos Asis", "Bonos Multas", "Sueldo Total"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Boolean.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Boolean.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -68,16 +75,9 @@ public class controlusuarioscap extends javax.swing.JFrame {
         });
         jtAsistencia.setPreferredSize(new java.awt.Dimension(400, 300));
         jScrollPane1.setViewportView(jtAsistencia);
-        if (jtAsistencia.getColumnModel().getColumnCount() > 0) {
-            jtAsistencia.getColumnModel().getColumn(0).setResizable(false);
-            jtAsistencia.getColumnModel().getColumn(1).setResizable(false);
-            jtAsistencia.getColumnModel().getColumn(2).setResizable(false);
-            jtAsistencia.getColumnModel().getColumn(3).setResizable(false);
-            jtAsistencia.getColumnModel().getColumn(5).setResizable(false);
-        }
 
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/unam/imagenes/busqueda_icon.png"))); // NOI18N
-        btnBuscar.setText("Buscar");
+        btnBuscar.setText("Buscar Id");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBuscarActionPerformed(evt);
@@ -103,16 +103,22 @@ public class controlusuarioscap extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 565, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(14, 14, 14)
+                            .addComponent(btnRegresar)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(btnBuscar))
+                        .addGroup(layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 930, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnRegresar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnBuscar)))
-                .addGap(0, 21, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(labelHora)))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -124,7 +130,9 @@ public class controlusuarioscap extends javax.swing.JFrame {
                     .addComponent(btnRegresar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(labelHora)
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();
@@ -136,17 +144,24 @@ public class controlusuarioscap extends javax.swing.JFrame {
             PreparedStatement ps;
             ResultSet rs;
             
-            String sql_capturador = "SELECT id_capt, nombre, apellido, asistencia, faltas, estatus FROM capturador ";
+            String sql_capturador = "SELECT id_capt, nombre, apellido, asistencia, faltas, estatus, bonos_asistencia, bonos_multas, sueldo_total FROM capturador ";
             ps = con.prepareStatement(sql_capturador);
             rs = ps.executeQuery();
             ResultSetMetaData rSMd = rs.getMetaData();
             int cantidadcolumnas = rSMd.getColumnCount();
-            modelo.addColumn("ID");
-            modelo.addColumn("NOMBRE");
-            modelo.addColumn("APELLIDO");
-            modelo.addColumn("ASIS");
-            modelo.addColumn("FALTAS");
-            modelo.addColumn("ESTATUS");
+            modelo.addColumn("ID");//0
+            modelo.addColumn("NOMBRE");//1
+            modelo.addColumn("APELLIDO");//2
+            modelo.addColumn("ASISTENCIA");//3
+            modelo.addColumn("FALTAS");//4
+            modelo.addColumn("ESTATUS");//5
+            modelo.addColumn("BONOS ASIST");//6
+            modelo.addColumn("BONOS MULTA");//7
+            modelo.addColumn("SUELDO");//8
+            int[] anchos= {50,130,130,80, 80, 80, 130, 130,120};
+            for (int i = 0; i < jtAsistencia.getColumnCount(); i++) {
+                jtAsistencia.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+            }
             while(rs.next()){
                 Object[] filas  = new Object[cantidadcolumnas];
                 for (int i = 0; i < cantidadcolumnas; i++) {
@@ -164,19 +179,18 @@ public class controlusuarioscap extends javax.swing.JFrame {
     }//GEN-LAST:event_txtBusquedaActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        
         String campo = txtBusqueda.getText();
         String where="";
         if (!"".equals(campo)){
             where = "WHERE nombre = '"+campo.toUpperCase()+"'";
-        }else{
-            cargarTabla();
         }
         try{
             DefaultTableModel modelo = new DefaultTableModel();
             jtAsistencia.setModel(modelo);
             PreparedStatement ps;
             ResultSet rs;
-            String sql_capturador = "SELECT id_capt, nombre, apellido, asistencia, estatus FROM capturador " + where;
+            String sql_capturador = "SELECT id_capt, nombre, apellido, asistencia, estatus FROM capturador "+ where;
             ps = con.prepareStatement(sql_capturador);
             rs = ps.executeQuery();
             ResultSetMetaData rSMd = rs.getMetaData();
@@ -249,6 +263,7 @@ public class controlusuarioscap extends javax.swing.JFrame {
     private javax.swing.JButton btnRegresar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jtAsistencia;
+    private javax.swing.JLabel labelHora;
     private javax.swing.JTextField txtBusqueda;
     // End of variables declaration//GEN-END:variables
 }

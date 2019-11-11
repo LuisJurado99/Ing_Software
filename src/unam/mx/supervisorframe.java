@@ -5,6 +5,9 @@
  */
 package unam.mx;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JOptionPane;
 
 /**
@@ -12,12 +15,14 @@ import javax.swing.JOptionPane;
  * @author luisj
  */
 public class supervisorframe extends javax.swing.JFrame {
-
+    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+    Date date = new Date();
     /**
      * Creates new form supervisorframe
      */
     public supervisorframe() {
         initComponents();
+        labelHora.setText(dateFormat.format(date));
     }
 
     /**
@@ -37,6 +42,7 @@ public class supervisorframe extends javax.swing.JFrame {
         jcbPersonal = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         btnModificar = new javax.swing.JButton();
+        labelHora = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -92,6 +98,8 @@ public class supervisorframe extends javax.swing.JFrame {
             }
         });
 
+        labelHora.setText("jLabel2");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -118,6 +126,10 @@ public class supervisorframe extends javax.swing.JFrame {
                                     .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
                                     .addComponent(btnAltas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addGap(64, 64, 64))))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(labelHora)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -136,7 +148,9 @@ public class supervisorframe extends javax.swing.JFrame {
                     .addComponent(btnModificar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
                 .addComponent(btnSalir)
-                .addGap(29, 29, 29))
+                .addGap(7, 7, 7)
+                .addComponent(labelHora)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -264,5 +278,6 @@ public class supervisorframe extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JComboBox<String> jcbPersonal;
+    private javax.swing.JLabel labelHora;
     // End of variables declaration//GEN-END:variables
 }

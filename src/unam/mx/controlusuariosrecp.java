@@ -9,6 +9,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -17,15 +20,16 @@ import javax.swing.table.DefaultTableModel;
  */
 public class controlusuariosrecp extends javax.swing.JFrame {
     Connection con=app.conex.getConection();    
+    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+    Date date = new Date();
 
     /**
      * Creates new form asistenciasrecepcion
      */
     public controlusuariosrecp() {
         initComponents();
-        if ("".equals(txtBusqueda.getText())) {
-            cargarTabla();
-        }
+        cargarTabla();
+        labelHora.setText(dateFormat.format(date));
         
         
     }
@@ -45,6 +49,7 @@ public class controlusuariosrecp extends javax.swing.JFrame {
         txtBusqueda = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
         btnRegresar = new javax.swing.JButton();
+        labelHora = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -56,14 +61,14 @@ public class controlusuariosrecp extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Nombre", "Apellido", "Asistencia", "Faltas", "Estatus"
+                "ID", "Nombre", "Apellido", "Asistencia", "Faltas", "Estatus", "Bonos Asist", "Bonos Multas", "Sueldo Total"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Boolean.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -75,17 +80,9 @@ public class controlusuariosrecp extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(jtAsistencia);
-        if (jtAsistencia.getColumnModel().getColumnCount() > 0) {
-            jtAsistencia.getColumnModel().getColumn(0).setResizable(false);
-            jtAsistencia.getColumnModel().getColumn(1).setResizable(false);
-            jtAsistencia.getColumnModel().getColumn(2).setResizable(false);
-            jtAsistencia.getColumnModel().getColumn(3).setResizable(false);
-            jtAsistencia.getColumnModel().getColumn(4).setResizable(false);
-            jtAsistencia.getColumnModel().getColumn(5).setResizable(false);
-        }
 
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/unam/imagenes/busqueda_icon.png"))); // NOI18N
-        btnBuscar.setText("Buscar");
+        btnBuscar.setText("Buscar Id");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBuscarActionPerformed(evt);
@@ -107,28 +104,25 @@ public class controlusuariosrecp extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 632, Short.MAX_VALUE)
-                        .addContainerGap())
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 930, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnRegresar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(477, 477, 477)
                         .addComponent(txtBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnBuscar)
-                        .addGap(27, 27, 27))))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnBuscar)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtBusqueda)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnRegresar)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnBuscar)
-                        .addComponent(btnRegresar)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtBusqueda)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26))
         );
@@ -137,11 +131,21 @@ public class controlusuariosrecp extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 942, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(labelHora)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(labelHora)
+                .addContainerGap())
         );
 
         pack();
@@ -152,8 +156,8 @@ public class controlusuariosrecp extends javax.swing.JFrame {
             jtAsistencia.setModel(modelo);
             PreparedStatement ps;
             ResultSet rs;
-            String sql_recepcion = "SELECT id_recp, nombre, apellido, asistencia, faltas, estatus FROM recepcion ";
-            ps = con.prepareStatement(sql_recepcion);
+            String sql_capturador = "SELECT id_recp, nombre, apellido, asistencia, faltas, estatus, bonos_asistencia,bonos_multas, sueldo_total FROM recepcion";
+            ps = con.prepareStatement(sql_capturador);
             rs = ps.executeQuery();
             ResultSetMetaData rSMd = rs.getMetaData();
 
@@ -162,9 +166,16 @@ public class controlusuariosrecp extends javax.swing.JFrame {
             modelo.addColumn("ID");
             modelo.addColumn("NOMBRE");
             modelo.addColumn("APELLIDO");
-            modelo.addColumn("ASIS");
+            modelo.addColumn("ASISTENCIA");
             modelo.addColumn("FALTAS");
             modelo.addColumn("ESTATUS");
+            modelo.addColumn("BONOS ASIST");
+            modelo.addColumn("BONOS MULTA");
+            modelo.addColumn("SUELDO TOTAL");
+            int[] anchos= {50,130,130,80, 80, 80, 130, 130,120};
+            for (int i = 0; i < jtAsistencia.getColumnCount(); i++) {
+                jtAsistencia.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+            }
             while(rs.next()){
                 Object[] filas  = new Object[cantidadcolumnas];
                 for (int i = 0; i < cantidadcolumnas; i++) {
@@ -181,15 +192,14 @@ public class controlusuariosrecp extends javax.swing.JFrame {
         String where="";
         if (!"".equals(campo)){
             where = "WHERE nombre = '"+campo.toUpperCase()+"'";
-        }else{
-            cargarTabla();
         }
         try{
             DefaultTableModel modelo = new DefaultTableModel();
             jtAsistencia.setModel(modelo);
             PreparedStatement ps;
             ResultSet rs;
-            String sql_capturador = "SELECT id_recp, nombre, apellido, asistencias, estatus FROM recepcion " + where;
+            String sql_capturador = "SELECT id_recp, nombre, apellido, asistencias, estatus FROM recepcion "+where;
+            
             ps = con.prepareStatement(sql_capturador);
             rs = ps.executeQuery();
             ResultSetMetaData rSMd = rs.getMetaData();
@@ -261,6 +271,7 @@ public class controlusuariosrecp extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jtAsistencia;
+    private javax.swing.JLabel labelHora;
     private javax.swing.JTextField txtBusqueda;
     // End of variables declaration//GEN-END:variables
 }

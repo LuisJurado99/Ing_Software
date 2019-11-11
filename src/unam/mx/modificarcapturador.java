@@ -29,8 +29,9 @@ public class modificarcapturador extends javax.swing.JFrame {
     int asistencias =10;
     int faltas=5;
     DefaultTableModel modelo = new DefaultTableModel();
-    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
     Date date = new Date();
+    Date dateVieja = new Date();
     /**
      * Creates new form modificartodos
      */
@@ -295,11 +296,12 @@ public class modificarcapturador extends javax.swing.JFrame {
             int Fila = jtModificar.getSelectedRow();
             String codigo = jtModificar.getValueAt(Fila, 0).toString();
 
-            ps = con.prepareStatement("SELECT id_capt,nombre,apellido, asistencia, faltas FROM capturador WHERE id_capt=?");
+            ps = con.prepareStatement("SELECT id_capt,nombre,apellido, asistencia, faltas, fecha_actualizacion FROM capturador WHERE id_capt=?");
             ps.setString(1, codigo);
             rs = ps.executeQuery();
 
             while (rs.next()) {
+                
                 asistencias = rs.getInt("asistencia");
                 faltas = rs.getInt("faltas");
                 txtApellido.setText(rs.getString("apellido"));
@@ -320,12 +322,25 @@ public class modificarcapturador extends javax.swing.JFrame {
 
     private void btnRegistrarAsisteniaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarAsisteniaActionPerformed
         PreparedStatement ps = null;
-           
+        java.sql.Date datetemp = new java.sql.Date(date.getTime());
+        if (asistencias ==3){
+            try {
+                ps = con.prepareStatement("UPDATE capturador SET bonos_asistencia= ? WHERE id_capt=?");
+                ps.setFloat(1, (float)300.0);
+                ps.setString(2, txtid.getText());
+                ps.execute();
+                
+            } catch (SQLException ex) {
+                System.out.println("Error: "+ex);
+            }
+        }
         if(btnAsistencia.isSelected()){
             try {
-                ps = con.prepareStatement("UPDATE capturador SET asistencia = ? WHERE id_capt=?");
+
+                ps = con.prepareStatement("UPDATE capturador SET asistencia = ?, fecha_actualizacion=? WHERE id_capt=?");
                 ps.setInt(1,asistencias+1);
-                ps.setString(2, txtid.getText());
+                ps.setDate(2, datetemp);
+                ps.setString(3, txtid.getText());
                 ps.execute();
                 JOptionPane.showMessageDialog(null, "Asistencia Actualizada");
             } catch (SQLException ex) {
@@ -342,12 +357,38 @@ public class modificarcapturador extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 System.out.println("Error: "+ex);
             }
+
         }
+        
+        
+        if (faltas==2){
+            try {
+                ps = con.prepareStatement("UPDATE capturador SET descuentos_faltas= ? WHERE id_capt=?");
+                ps.setFloat(1, (float)350.0);
+                ps.setString(2, txtid.getText());
+                ps.execute();
+                JOptionPane.showMessageDialog(null,"El usuario:"+txtNombre.getText()+" "+txtApellido.getName()+".\n"
+                            + "Se le han descontado $300.0por faltas");
+            } catch (SQLException ex) {
+                System.out.println("Error: "+ex);
+            }
+        }else if (faltas>=3) {
+            try {
+                ps = con.prepareStatement("UPDATE capturador SET estatus=? WHERE id_capt=?");
+                ps.setBoolean(1, false);
+                ps.setString(2, txtid.getText());
+                JOptionPane.showMessageDialog(null,"El usuario:"+txtNombre.getText()+" "+txtApellido.getName()+"Se ha dado de baja debido"+
+                        "a las faltas");
+                ps.execute();
+
+            } catch (SQLException ex) {
+                System.out.println("Error: "+ex);
+            }
+        }
+
         if (!btnAsistencia.isSelected() && !btnFalta.isSelected()){
             JOptionPane.showMessageDialog(null, "No registraste ninguna opcion");
         }
-        
-        
     }//GEN-LAST:event_btnRegistrarAsisteniaActionPerformed
 
     private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed

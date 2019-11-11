@@ -16,6 +16,8 @@ import javax.swing.table.DefaultTableModel;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -26,8 +28,9 @@ public class modificarrecepcion extends javax.swing.JFrame {
     int asistencia=0;
     int faltas=0;
     DefaultTableModel modelo = new DefaultTableModel();
-    DateFormat dateFromat = new SimpleDateFormat("dd/MM/yyyy");
+    DateFormat dateFromat = new SimpleDateFormat("yyyy/mm/dd");
     Date date = new Date();
+    
     /**
      * Creates new form modificartodos
      */
@@ -42,6 +45,7 @@ public class modificarrecepcion extends javax.swing.JFrame {
             String sql_capturador = "SELECT id_recp, nombre, apellido, asistencia, estatus FROM recepcion";
             ps = con.prepareStatement(sql_capturador);
             rs = ps.executeQuery();
+            
             ResultSetMetaData rSMd = rs.getMetaData();
             int cantidadcolumnas = rSMd.getColumnCount();
             modelo.addColumn("ID");
@@ -64,6 +68,7 @@ public class modificarrecepcion extends javax.swing.JFrame {
         grupobotones.add(buttonFalta);
         
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -263,7 +268,7 @@ public class modificarrecepcion extends javax.swing.JFrame {
 
         PreparedStatement ps = null;
         try {
-            ps = con.prepareStatement("UPDATE recepion SET nombre=?, apellido=? WHERE id_recp=?");
+            ps = con.prepareStatement("UPDATE recepcion SET nombre=?, apellido=? WHERE id_recp=?");
 
             ps.setString(1, txtNombre.getText().toUpperCase());
             ps.setString(2, txtApellido.getText().toUpperCase());
@@ -297,7 +302,7 @@ public class modificarrecepcion extends javax.swing.JFrame {
             int Fila = jtModificar.getSelectedRow();
             String codigo = jtModificar.getValueAt(Fila, 0).toString();
 
-            ps = con.prepareStatement("SELECT id_recp,nombre,apellido, asistencia, faltas FROM recepcion WHERE id_recp=?");
+            ps = con.prepareStatement("SELECT id_recp,nombre,apellido, asistencia, faltas, fecha_actualizacion FROM recepcion WHERE id_recp=?");
             ps.setString(1, codigo);
             rs = ps.executeQuery();
 
@@ -324,10 +329,21 @@ public class modificarrecepcion extends javax.swing.JFrame {
 
     private void btnRegistrarAsistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarAsistenciaActionPerformed
         PreparedStatement ps = null;
-        
+        if (asistencia==3){
+            try {
+                ps = con.prepareStatement("UPDATE recepcion SET bonos_asistencia WHERE id_recp=?");
+                ps.setFloat(1,(float) 300.0);
+                ps.setString(2, txtid.getText());
+                ps.execute();
+            } catch (SQLException ex) {
+                Logger.getLogger(modificarrecepcion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                
+        }
+
         if(buttonAsistencia.isSelected()){
             try{
-                ps = con.prepareStatement("UPDATE recepcion SET asistencia = ? WHERE id_recp=?");
+                ps = con.prepareStatement("UPDATE capturador SET asistencia = ? WHERE id_capt=?");
                 ps.setInt(1,asistencia+1);
                 ps.setString(2, txtid.getText());
                 ps.execute();
@@ -347,11 +363,35 @@ public class modificarrecepcion extends javax.swing.JFrame {
                 System.out.println("Error: "+e);
             }
         }
-        if (!buttonAsistencia.isSelected() && !buttonFalta.isSelected()){
-            JOptionPane.showMessageDialog(null, "No registraste ninguna opcion");
+        if (faltas==2) {
+            try {
+                ps=con.prepareStatement("UPDATE recepcion SET faltas_descuento=? WHERE id_recp=?");
+                ps.setFloat(1, 300);
+                ps.setString(2,txtid.getText());
+                ps.execute();
+                JOptionPane.showMessageDialog(null,"El usuario:"+txtNombre.getText()+" "+txtApellido.getName()+".\n"
+                        + "Se le han descontado $300.0por faltas");
+            } catch (SQLException ex) {
+                Logger.getLogger(modificarrecepcion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }else if(faltas>=3){
+            try {
+            ps = con.prepareStatement("UPDATE recepcion SET estatus=? WHERE id_recp=?");
+            ps.setBoolean(1, false);
+            ps.setString(2, txtid.getText());
+            JOptionPane.showMessageDialog(null,"El usuario:"+txtNombre.getText()+" "+txtApellido.getName()+"Se ha dado de baja debido"+
+                    "a las faltas");
+            ps.execute();
+
+            } catch (SQLException ex) {
+                System.out.println("Error: "+ex);
+            }
         }
         
-            
+        if (!buttonAsistencia.isSelected() && !buttonFalta.isSelected()){
+            JOptionPane.showMessageDialog(null, "No registraste ninguna opcion");
+        }        
     }//GEN-LAST:event_btnRegistrarAsistenciaActionPerformed
 
     private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
