@@ -11,8 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.text.DateFormat;
@@ -51,8 +49,13 @@ public class modificarcapturador extends javax.swing.JFrame {
             modelo.addColumn("ID");
             modelo.addColumn("NOMBRE");
             modelo.addColumn("APELLIDO");
-            modelo.addColumn("ASIS");
+            modelo.addColumn("ASISTENCIA");
+            modelo.addColumn("FALTAS");
             modelo.addColumn("ESTATUS");
+            int[] anchos= {50,130,130,130, 100, 80};
+            for (int i = 0; i < jtModificar.getColumnCount(); i++) {
+                jtModificar.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+            }
             while(rs.next()){
                 Object[] filas  = new Object[cantidadcolumnas];
                 for (int i = 0; i < cantidadcolumnas; i++) {
@@ -263,24 +266,24 @@ public class modificarcapturador extends javax.swing.JFrame {
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         PreparedStatement ps = null;
-        ResultSet rs = null;
         int Fila = jtModificar.getSelectedRow();
         try{
-                ps = con.prepareStatement("UPDATE capturador SET nombre=?, apellido=? WHERE id_capt=?");
-                ps.setString(1, txtNombre.getText().toUpperCase());
-                ps.setString(2, txtApellido.getText().toUpperCase());
-                ps.setString(3, txtid.getText());
-                ps.execute();
+            ps = con.prepareStatement("UPDATE capturador SET nombre=?, apellido=? WHERE id_capt=?");
+            ps.setString(1, txtNombre.getText().toUpperCase());
+            ps.setString(2, txtApellido.getText().toUpperCase());
+            ps.setString(3, txtid.getText());
+            ps.execute();
 
-                JOptionPane.showMessageDialog(null, "Producto Modificado");
-                jtModificar.setValueAt(txtNombre.getText().toUpperCase(), Fila, 1);
-                jtModificar.setValueAt(txtApellido.getText().toUpperCase(), Fila, 2);
-            
-            }catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Producto Modificado");
+            jtModificar.setValueAt(txtNombre.getText().toUpperCase(), Fila, 1);
+            jtModificar.setValueAt(txtApellido.getText().toUpperCase(), Fila, 2);
+
+        }catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al Modificar Producto");
             System.out.println(ex);
             }
-         
+        jtModificar.setValueAt(txtNombre.getText().toUpperCase(), Fila, 1);
+        jtModificar.setValueAt(txtApellido.getText().toUpperCase(), Fila, 2);
 
     }//GEN-LAST:event_btnModificarActionPerformed
 
@@ -323,72 +326,64 @@ public class modificarcapturador extends javax.swing.JFrame {
     private void btnRegistrarAsisteniaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarAsisteniaActionPerformed
         PreparedStatement ps = null;
         java.sql.Date datetemp = new java.sql.Date(date.getTime());
-        if (asistencias ==3){
-            try {
-                ps = con.prepareStatement("UPDATE capturador SET bonos_asistencia= ? WHERE id_capt=?");
-                ps.setFloat(1, (float)300.0);
-                ps.setString(2, txtid.getText());
-                ps.execute();
-                
-            } catch (SQLException ex) {
-                System.out.println("Error: "+ex);
-            }
-        }
+        int Fila = jtModificar.getSelectedRow();
+        
         if(btnAsistencia.isSelected()){
             try {
-
                 ps = con.prepareStatement("UPDATE capturador SET asistencia = ?, fecha_actualizacion=? WHERE id_capt=?");
                 ps.setInt(1,asistencias+1);
                 ps.setDate(2, datetemp);
                 ps.setString(3, txtid.getText());
                 ps.execute();
                 JOptionPane.showMessageDialog(null, "Asistencia Actualizada");
+                
+                jtModificar.setValueAt(asistencias+1, Fila, 3);
+                if (asistencias >=3){
+                    ps = con.prepareStatement("UPDATE capturador SET bonos_asistencia= ? WHERE id_capt=?");
+                    ps.setFloat(1, (float)300.0);
+                    ps.setString(2, txtid.getText());
+                    ps.execute();
+                }
             } catch (SQLException ex) {
                 System.out.println("Error: "+ex);
             }
+            System.out.println("Si entra a la asistencia");
         }
         if (btnFalta.isSelected()){
             try {
                 ps = con.prepareStatement("UPDATE capturador SET faltas = ? WHERE id_capt=?");
-                ps.setInt(1,faltas+1);
+                ps.setInt(1, faltas + 1);
                 ps.setString(2, txtid.getText());
                 ps.execute();
                 JOptionPane.showMessageDialog(null, "Faltas Actualizada");
-            } catch (SQLException ex) {
-                System.out.println("Error: "+ex);
-            }
+                
+                jtModificar.setValueAt(faltas + 1, Fila, 3);
+                if (faltas == 2) {
 
-        }
-        
-        
-        if (faltas==2){
-            try {
-                ps = con.prepareStatement("UPDATE capturador SET descuentos_faltas= ? WHERE id_capt=?");
-                ps.setFloat(1, (float)350.0);
-                ps.setString(2, txtid.getText());
-                ps.execute();
-                JOptionPane.showMessageDialog(null,"El usuario:"+txtNombre.getText()+" "+txtApellido.getName()+".\n"
+                    ps = con.prepareStatement("UPDATE capturador SET descuentos_faltas= ? WHERE id_capt=?");
+                    ps.setFloat(1, (float) 350.0);
+                    ps.setString(2, txtid.getText());
+                    ps.execute();
+                    JOptionPane.showMessageDialog(null, "El usuario:" + txtNombre.getText() + " " + txtApellido.getName() + ".\n"
                             + "Se le han descontado $300.0por faltas");
+                }
+                if (faltas >= 3) {
+                    ps = con.prepareStatement("UPDATE capturador SET estatus=? WHERE id_capt=?");
+                    ps.setBoolean(1, false);
+                    ps.setString(2, txtid.getText());
+                    JOptionPane.showMessageDialog(null, "El usuario:" + txtNombre.getText() + " " + txtApellido.getName() + "Se ha dado de baja debido"
+                            + "a las faltas");
+                    ps.execute();
+                }
             } catch (SQLException ex) {
-                System.out.println("Error: "+ex);
+                System.out.println("Error: " + ex);
             }
-        }else if (faltas>=3) {
-            try {
-                ps = con.prepareStatement("UPDATE capturador SET estatus=? WHERE id_capt=?");
-                ps.setBoolean(1, false);
-                ps.setString(2, txtid.getText());
-                JOptionPane.showMessageDialog(null,"El usuario:"+txtNombre.getText()+" "+txtApellido.getName()+"Se ha dado de baja debido"+
-                        "a las faltas");
-                ps.execute();
-
-            } catch (SQLException ex) {
-                System.out.println("Error: "+ex);
-            }
+            
         }
-
         if (!btnAsistencia.isSelected() && !btnFalta.isSelected()){
             JOptionPane.showMessageDialog(null, "No registraste ninguna opcion");
         }
+        
     }//GEN-LAST:event_btnRegistrarAsisteniaActionPerformed
 
     private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed

@@ -96,6 +96,7 @@ public class BonosTodos extends javax.swing.JFrame {
         float bonocapturador = (float) (bonoTotal*0.35);
         float bonorecepcion =  (float)(bonoTotal*0.35);
         float bonosupervisor = (float) (bonoTotal*0.30);
+            
         
     }//GEN-LAST:event_btnBonoMultasActionPerformed
     private void actualizarSueldo() throws SQLException{
