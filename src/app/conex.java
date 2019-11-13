@@ -13,9 +13,9 @@ import javax.swing.JOptionPane;
  * @author luisj
  */
 public class conex {
-    public static final String URL = "jdbc:mysql://127.0.0.1:3306/ing_software";
-    public static final String USERNAME = "root";
-    public static final String PASSWORD = "rootroot";
+    public static final String URL = "jdbc:mysql://remotemysql.com:3306/Nclx7geMqX";
+    public static final String USERNAME = "Nclx7geMqX";
+    public static final String PASSWORD = "GxO3BMW3Au";
     
     public static void coneccion(){
         try {
@@ -44,7 +44,7 @@ public class conex {
         try{
             Class.forName("com.mysql.jdbc.Driver");
             con =(Connection)DriverManager.getConnection(URL,USERNAME, PASSWORD);
-            System.out.println("conecta chido");
+            //System.out.println("conecta chido");
         }catch(Exception e){
             System.out.println("Error:"+e);
                 
