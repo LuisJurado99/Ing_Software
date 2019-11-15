@@ -47,9 +47,7 @@ public void cargarTabla(){
         jtModificar.setModel(modelo);
         PreparedStatement ps;
         ResultSet rs;
-
-        String sql_capturador = "SELECT id_recp, nombre, apellido, asistencia, faltas, estatus FROM recepcion";
-        ps = con.prepareStatement(sql_capturador);
+        ps = con.prepareStatement("SELECT id_recp, nombre, apellido, asistencia, faltas, estatus FROM recepcion");
         rs = ps.executeQuery();
         ResultSetMetaData rSMd = rs.getMetaData();
         int cantidadcolumnas = rSMd.getColumnCount();
@@ -69,6 +67,7 @@ public void cargarTabla(){
                 filas[i] = rs.getObject(i+1);
             }
             modelo.addRow(filas);
+            
         }            
         }catch (SQLException e) {
             System.out.println("Error: "+e);
@@ -109,14 +108,10 @@ public void cargarTabla(){
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1060, 410));
 
         jtModificar.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
@@ -277,8 +272,6 @@ public void cargarTabla(){
             ps.setString(1, txtNombre.getText().toUpperCase());
             ps.setString(2, txtApellido.getText().toUpperCase());
             ps.setString(3, txtid.getText());
-            
-
             ps.execute();
 
             JOptionPane.showMessageDialog(null, "Datos Guardados");
@@ -322,8 +315,7 @@ public void cargarTabla(){
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
-        int Fila = jtModificar.getSelectedRow();
-        jtModificar.setValueAt(asistencia, Fila, 3);
+        
     }//GEN-LAST:event_jtModificarMouseClicked
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
@@ -351,7 +343,7 @@ public void cargarTabla(){
                     ps2.setFloat(1,(float) 300.0);
                     ps2.setString(2, txtid.getText());
                     ps2.execute();
-                    JOptionPane.showMessageDialog(null, "Se le asigno un bono de asistencia de $300.00 \n gracias a las asistencias");
+                    JOptionPane.showMessageDialog(null, "Se le asigno un bono de asistencia de $300.00");
                 }
             }catch(Exception e ){
                     System.out.println("Error: "+e);
@@ -364,22 +356,24 @@ public void cargarTabla(){
                 ps.setInt(1, faltas+1);
                 ps.setString(2, txtid.getText());
                 ps.execute();
+                jtModificar.setValueAt(asistencia+1, Fila, 4);
                 JOptionPane.showMessageDialog(null, "Faltas Actualizada");
                 if (faltas+1==2) {
                     ps2=con.prepareStatement("UPDATE recepcion SET faltas_descuento=? WHERE id_recp=?");
-                    ps2.setFloat(1, 300);
+                    ps2.setFloat(1, (float) 300.0);
                     ps2.setString(2,txtid.getText());
                     ps2.execute();
-                    JOptionPane.showMessageDialog(null, "El usuario:" + txtNombre.getText() + " " + txtApellido.getName() + ".\n"
-                    + "Se le han descontado $300.0por faltas");
+                    JOptionPane.showMessageDialog(null, "El usuario:" + txtNombre.getText() + " " + txtApellido.getText() + ".\n"
+                    + "Se le han descontado $300.0 por faltas");
                 }
                 if (faltas+1 >= 3) {
                     ps2 = con.prepareStatement("UPDATE recepcion SET estatus=? WHERE id_recp=?");
                     ps2.setBoolean(1, false);
                     ps2.setString(2, txtid.getText());
-                    JOptionPane.showMessageDialog(null, "El usuario:" + txtNombre.getText() + " " + txtApellido.getName() + "Se ha dado de baja debido"
+                    JOptionPane.showMessageDialog(null, "El usuario:" + txtNombre.getText() + " " + txtApellido.getText() + "Se ha dado de baja debido"
                     + "a las faltas");
                     ps.execute();
+                    jtModificar.setValueAt(false, Fila, 5);
                 }
             }catch(Exception e ){
                 System.out.println("Error: "+e);

@@ -24,12 +24,12 @@ import java.util.Date;
  */
 public class modificarcapturador extends javax.swing.JFrame {
     Connection con=app.conex.getConection();    
-    int asistencias =10;
-    int faltas=5;
+    int asistencias =0;
+    int faltas=0;
     DefaultTableModel modelo = new DefaultTableModel();
     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
     Date date = new Date();
-    Date dateVieja = new Date();
+    
     /**
      * Creates new form modificartodos
      */
@@ -43,7 +43,6 @@ public class modificarcapturador extends javax.swing.JFrame {
     }
     public void cargarTabla(){
         try {
-            DefaultTableModel modelo = new DefaultTableModel();
             jtModificar.setModel(modelo);
             PreparedStatement ps;
             ResultSet rs;
@@ -53,12 +52,12 @@ public class modificarcapturador extends javax.swing.JFrame {
             rs = ps.executeQuery();
             ResultSetMetaData rsMd = rs.getMetaData();
             int cantidadcolumnas = rsMd.getColumnCount();
-            modelo.addColumn("ID");
-            modelo.addColumn("NOMBRE");
-            modelo.addColumn("APELLIDO");
-            modelo.addColumn("ASIST");
-            modelo.addColumn("FALTAS");
-            modelo.addColumn("ESTATUS");
+            modelo.addColumn("ID");//0
+            modelo.addColumn("NOMBRE");//1
+            modelo.addColumn("APELLIDO");//2
+            modelo.addColumn("ASIST");//3
+            modelo.addColumn("FALTAS");//4
+            modelo.addColumn("ESTATUS");//5
             int[] anchos= {60,140,140,130, 110, 80};
             for (int i = 0; i < jtModificar.getColumnCount(); i++) {
                 jtModificar.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
@@ -69,6 +68,7 @@ public class modificarcapturador extends javax.swing.JFrame {
                     filas[i] = rs.getObject(i+1);
                 }
                 modelo.addRow(filas);
+                
             }            
         }catch (SQLException e) {
             System.out.println("Error: "+e);
@@ -84,8 +84,6 @@ public class modificarcapturador extends javax.swing.JFrame {
     private void initComponents() {
 
         grupobotones = new javax.swing.ButtonGroup();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jtModificar = new javax.swing.JTable();
         txtNombre = new javax.swing.JTextField();
         txtApellido = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -100,30 +98,10 @@ public class modificarcapturador extends javax.swing.JFrame {
         btnRegistrarAsistenia = new javax.swing.JButton();
         labelHora = new javax.swing.JLabel();
         btnBorrar = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jtModificar = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1060, 410));
-
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(920, 410));
-
-        jtModificar.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jtModificar.setPreferredSize(new java.awt.Dimension(620, 64));
-        jtModificar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jtModificarMouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(jtModificar);
 
         jLabel1.setText("Nombre");
 
@@ -176,6 +154,29 @@ public class modificarcapturador extends javax.swing.JFrame {
             }
         });
 
+        jtModificar.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jtModificar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtModificarMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(jtModificar);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -189,8 +190,8 @@ public class modificarcapturador extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 660, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 648, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -205,7 +206,6 @@ public class modificarcapturador extends javax.swing.JFrame {
                                                     .addComponent(jLabel3))
                                                 .addGap(77, 77, 77))
                                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(btnModificar)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -232,7 +232,6 @@ public class modificarcapturador extends javax.swing.JFrame {
                 .addComponent(btnRegresar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
@@ -259,8 +258,9 @@ public class modificarcapturador extends javax.swing.JFrame {
                                     .addComponent(btnModificar)
                                     .addComponent(btnRegistrarAsistenia, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(18, 18, 18)
-                        .addComponent(btnBorrar)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                        .addComponent(btnBorrar))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(labelHora))
         );
 
@@ -277,7 +277,7 @@ public class modificarcapturador extends javax.swing.JFrame {
             ps.setString(3, txtid.getText());
             ps.execute();
 
-            JOptionPane.showMessageDialog(null, "Producto Modificado");
+            JOptionPane.showMessageDialog(null, "Usuario Modificado");
             jtModificar.setValueAt(txtNombre.getText().toUpperCase(), Fila, 1);
             jtModificar.setValueAt(txtApellido.getText().toUpperCase(), Fila, 2);
 
@@ -293,32 +293,6 @@ public class modificarcapturador extends javax.swing.JFrame {
     private void btnAsistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsistenciaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAsistenciaActionPerformed
-
-    private void jtModificarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtModificarMouseClicked
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        try {
-            
-            int Fila = jtModificar.getSelectedRow();
-            String codigo = jtModificar.getValueAt(Fila, 0).toString();
-
-            ps = con.prepareStatement("SELECT id_capt,nombre,apellido, asistencia, faltas, fecha_actualizacion FROM capturador WHERE id_capt=?");
-            ps.setString(1, codigo);
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                
-                asistencias = rs.getInt("asistencia");
-                faltas = rs.getInt("faltas");
-                txtApellido.setText(rs.getString("apellido"));
-                txtNombre.setText(rs.getString("nombre"));
-                txtid.setText(rs.getString("id_capt"));
-                
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex.toString());
-        }
-    }//GEN-LAST:event_jtModificarMouseClicked
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         supervisorframe spu = new supervisorframe();
@@ -341,16 +315,17 @@ public class modificarcapturador extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Asistencia Actualizada");
                 
                 jtModificar.setValueAt(asistencias+1, Fila, 3);
-                if (asistencias >=3){
+                if (asistencias >=5){
                     ps = con.prepareStatement("UPDATE capturador SET bonos_asistencia= ? WHERE id_capt=?");
                     ps.setFloat(1, (float)300.0);
                     ps.setString(2, txtid.getText());
                     ps.execute();
+                    JOptionPane.showMessageDialog(null, "Bono de Asistencia A:"+txtNombre.getText()+ " " + txtApellido.getText());
                 }
             } catch (SQLException ex) {
                 System.out.println("Error: "+ex);
             }
-            System.out.println("Si entra a la asistencia");
+            
         }
         if (btnFalta.isSelected()){
             try {
@@ -360,23 +335,24 @@ public class modificarcapturador extends javax.swing.JFrame {
                 ps.execute();
                 JOptionPane.showMessageDialog(null, "Faltas Actualizada");
                 
-                jtModificar.setValueAt(faltas + 1, Fila, 3);
-                if (faltas == 2) {
+                jtModificar.setValueAt(faltas + 1, Fila, 4);
+                if (faltas+1 == 2) {
 
-                    ps = con.prepareStatement("UPDATE capturador SET descuentos_faltas= ? WHERE id_capt=?");
+                    ps = con.prepareStatement("UPDATE capturador SET faltas_descuento= ? WHERE id_capt=?");
                     ps.setFloat(1, (float) 350.0);
                     ps.setString(2, txtid.getText());
                     ps.execute();
-                    JOptionPane.showMessageDialog(null, "El usuario:" + txtNombre.getText() + " " + txtApellido.getName() + ".\n"
-                            + "Se le han descontado $300.0por faltas");
+                    JOptionPane.showMessageDialog(null, "El usuario:" + txtNombre.getText() + " " + txtApellido.getText() + ".\n"
+                            + "Se le han descontado $350.0 por faltas");
                 }
-                if (faltas >= 3) {
+                if (faltas+1 >= 3) {
                     ps = con.prepareStatement("UPDATE capturador SET estatus=? WHERE id_capt=?");
                     ps.setBoolean(1, false);
                     ps.setString(2, txtid.getText());
-                    JOptionPane.showMessageDialog(null, "El usuario:" + txtNombre.getText() + " " + txtApellido.getName() + "Se ha dado de baja debido"
+                    JOptionPane.showMessageDialog(null, "El usuario:" + txtNombre.getText() + " " + txtApellido.getText() + "Se ha dado de baja debido"
                             + "a las faltas");
                     ps.execute();
+                    jtModificar.setValueAt(false, Fila, 5);
                 }
             } catch (SQLException ex) {
                 System.out.println("Error: " + ex);
@@ -407,6 +383,32 @@ public class modificarcapturador extends javax.swing.JFrame {
         txtApellido.setText("");
         
     }//GEN-LAST:event_btnBorrarActionPerformed
+
+    private void jtModificarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtModificarMouseClicked
+        try {
+            PreparedStatement ps = null;
+            ResultSet rs = null;
+            int Fila = jtModificar.getSelectedRow();
+            String codigo = jtModificar.getValueAt(Fila, 0).toString();
+
+            ps = con.prepareStatement("SELECT id_capt,nombre,apellido, asistencia, faltas, fecha_actualizacion FROM capturador WHERE id_capt=?");
+            ps.setString(1, codigo);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                faltas = rs.getInt("faltas");
+                asistencias = rs.getInt("asistencia");
+                txtApellido.setText(rs.getString("apellido"));
+                txtNombre.setText(rs.getString("nombre"));
+                txtid.setText(rs.getString("id_capt"));
+                
+                
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+        }
+        
+    }//GEN-LAST:event_jtModificarMouseClicked
 
     /**
      * @param args the command line arguments
@@ -458,7 +460,7 @@ public class modificarcapturador extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jtModificar;
     private javax.swing.JLabel labelHora;
     private javax.swing.JTextField txtApellido;
