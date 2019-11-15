@@ -44,7 +44,7 @@ public class conex {
         try{
             Class.forName("com.mysql.jdbc.Driver");
             con =(Connection)DriverManager.getConnection(URL,USERNAME, PASSWORD);
-            //System.out.println("conecta chido");
+            System.out.println("conecta chido");
         }catch(Exception e){
             System.out.println("Error:"+e);
                 

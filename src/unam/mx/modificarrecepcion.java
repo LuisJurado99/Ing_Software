@@ -16,8 +16,7 @@ import javax.swing.table.DefaultTableModel;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  *
@@ -45,33 +44,31 @@ public class modificarrecepcion extends javax.swing.JFrame {
     
 public void cargarTabla(){
     try {
-            
-            jtModificar.setModel(modelo);
-            PreparedStatement ps;
-            ResultSet rs;
-            
-            String sql_capturador = "SELECT id_recp, nombre, apellido, asistencia, faltas, estatus FROM recepcion";
-            ps = con.prepareStatement(sql_capturador);
-            rs = ps.executeQuery();
-            
-            ResultSetMetaData rSMd = rs.getMetaData();
-            int cantidadcolumnas = rSMd.getColumnCount();
-            modelo.addColumn("ID");
-            modelo.addColumn("NOMBRE");
-            modelo.addColumn("APELLIDO");
-            modelo.addColumn("ASISTENCIA");
-            modelo.addColumn("FALTAS");
-            modelo.addColumn("ESTATUS");
-            int[] anchos= {50,130,130,130, 100, 80};
-            for (int i = 0; i < jtModificar.getColumnCount(); i++) {
-                jtModificar.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+        jtModificar.setModel(modelo);
+        PreparedStatement ps;
+        ResultSet rs;
+
+        String sql_capturador = "SELECT id_recp, nombre, apellido, asistencia, faltas, estatus FROM recepcion";
+        ps = con.prepareStatement(sql_capturador);
+        rs = ps.executeQuery();
+        ResultSetMetaData rSMd = rs.getMetaData();
+        int cantidadcolumnas = rSMd.getColumnCount();
+        modelo.addColumn("ID");//0
+        modelo.addColumn("NOMBRE");//1
+        modelo.addColumn("APELLIDO");//2
+        modelo.addColumn("ASIST");//3
+        modelo.addColumn("FALTAS");//4
+        modelo.addColumn("ESTADO");//5
+        int[] anchos= {60,140,140,130, 110, 80};
+        for (int i = 0; i < jtModificar.getColumnCount(); i++) {
+            jtModificar.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+        }
+        while(rs.next()){
+            Object[] filas  = new Object[cantidadcolumnas];
+            for (int i = 0; i < cantidadcolumnas; i++) {
+                filas[i] = rs.getObject(i+1);
             }
-            while(rs.next()){
-                Object[] filas  = new Object[cantidadcolumnas];
-                for (int i = 0; i < cantidadcolumnas; i++) {
-                    filas[i] = rs.getObject(i+1);
-                }
-                modelo.addRow(filas);
+            modelo.addRow(filas);
         }            
         }catch (SQLException e) {
             System.out.println("Error: "+e);
@@ -88,6 +85,8 @@ public void cargarTabla(){
 
         grupobotones = new javax.swing.ButtonGroup();
         jTextField1 = new javax.swing.JTextField();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jSlider1 = new javax.swing.JSlider();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtModificar = new javax.swing.JTable();
         txtNombre = new javax.swing.JTextField();
@@ -107,7 +106,10 @@ public void cargarTabla(){
 
         jTextField1.setText("jTextField1");
 
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1060, 410));
 
         jtModificar.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -120,6 +122,7 @@ public void cargarTabla(){
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jtModificar.setPreferredSize(new java.awt.Dimension(660, 64));
         jtModificar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jtModificarMouseClicked(evt);
@@ -183,64 +186,56 @@ public void cargarTabla(){
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
                         .addComponent(labelHora)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnRegresar)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnRegresar)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 620, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(60, 60, 60)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btnGuardar)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(btnRegistrarAsistencia))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(47, 47, 47)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(jLabel2)
-                                                    .addComponent(jLabel1)
-                                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                                                    .addComponent(labelID))
-                                                .addGap(69, 69, 69)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                    .addComponent(buttonFalta, javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(txtApellido, javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(buttonAsistencia, javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(txtid, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(98, 98, 98)
-                                                .addComponent(btnBorrar)))
-                                        .addGap(0, 0, Short.MAX_VALUE)))))
-                        .addContainerGap(12, Short.MAX_VALUE))))
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(labelID))
+                                .addGap(69, 69, 69)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(buttonFalta, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtApellido, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(buttonAsistencia, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtid, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(88, 88, 88)
+                                .addComponent(btnBorrar))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnGuardar)
+                                .addGap(29, 29, 29)
+                                .addComponent(btnRegistrarAsistencia)))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(8, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(btnRegresar)
-                        .addGap(18, 18, 18))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(44, 44, 44)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelID))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(40, 40, 40)
-                        .addComponent(labelHora))
-                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelID, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtid, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(12, 12, 12)
@@ -264,6 +259,8 @@ public void cargarTabla(){
                             .addComponent(btnRegistrarAsistencia, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(btnBorrar)))
+                .addGap(40, 40, 40)
+                .addComponent(labelHora)
                 .addGap(17, 17, 17))
         );
 
@@ -338,7 +335,9 @@ public void cargarTabla(){
 
     private void btnRegistrarAsistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarAsistenciaActionPerformed
         PreparedStatement ps = null;
-                    int Fila = jtModificar.getSelectedRow();
+        PreparedStatement ps2 = null;
+        
+        int Fila = jtModificar.getSelectedRow();
         if(buttonAsistencia.isSelected()){
             try{
                 ps = con.prepareStatement("UPDATE recepcion SET asistencia = ? WHERE id_recp=?");
@@ -346,13 +345,13 @@ public void cargarTabla(){
                 ps.setString(2, txtid.getText());
                 ps.execute();
                 JOptionPane.showMessageDialog(null, "Asistencia Actualizada");
-                
                 jtModificar.setValueAt(asistencia+1, Fila, 3);
                 if (asistencia>=5){
-                ps = con.prepareStatement("UPDATE recepcion SET bonos_asistencia = ? WHERE id_recp=?");
-                ps.setFloat(1,(float) 300.0);
-                ps.setString(2, txtid.getText());
-                ps.execute();
+                    ps2 = con.prepareStatement("UPDATE recepcion SET bonos_asistencia = ? WHERE id_recp=?");
+                    ps2.setFloat(1,(float) 300.0);
+                    ps2.setString(2, txtid.getText());
+                    ps2.execute();
+                    JOptionPane.showMessageDialog(null, "Se le asigno un bono de asistencia de $300.00 \n gracias a las asistencias");
                 }
             }catch(Exception e ){
                     System.out.println("Error: "+e);
@@ -366,27 +365,25 @@ public void cargarTabla(){
                 ps.setString(2, txtid.getText());
                 ps.execute();
                 JOptionPane.showMessageDialog(null, "Faltas Actualizada");
-                if (faltas==2) {
-                ps=con.prepareStatement("UPDATE recepcion SET faltas_descuento=? WHERE id_recp=?");
-                ps.setFloat(1, 300);
-                ps.setString(2,txtid.getText());
-                ps.execute();
-                JOptionPane.showMessageDialog(null, "El usuario:" + txtNombre.getText() + " " + txtApellido.getName() + ".\n"
-                                + "Se le han descontado $300.0por faltas");
+                if (faltas+1==2) {
+                    ps2=con.prepareStatement("UPDATE recepcion SET faltas_descuento=? WHERE id_recp=?");
+                    ps2.setFloat(1, 300);
+                    ps2.setString(2,txtid.getText());
+                    ps2.execute();
+                    JOptionPane.showMessageDialog(null, "El usuario:" + txtNombre.getText() + " " + txtApellido.getName() + ".\n"
+                    + "Se le han descontado $300.0por faltas");
                 }
-                if (faltas >= 3) {
-                        ps = con.prepareStatement("UPDATE recepcion SET estatus=? WHERE id_recp=?");
-                        ps.setBoolean(1, false);
-                        ps.setString(2, txtid.getText());
-                        JOptionPane.showMessageDialog(null, "El usuario:" + txtNombre.getText() + " " + txtApellido.getName() + "Se ha dado de baja debido"
-                                + "a las faltas");
-                        ps.execute();
+                if (faltas+1 >= 3) {
+                    ps2 = con.prepareStatement("UPDATE recepcion SET estatus=? WHERE id_recp=?");
+                    ps2.setBoolean(1, false);
+                    ps2.setString(2, txtid.getText());
+                    JOptionPane.showMessageDialog(null, "El usuario:" + txtNombre.getText() + " " + txtApellido.getName() + "Se ha dado de baja debido"
+                    + "a las faltas");
+                    ps.execute();
                 }
             }catch(Exception e ){
                 System.out.println("Error: "+e);
             }
-
-            jtModificar.setValueAt(faltas+1, Fila, 4);
         }
         
         if (!buttonAsistencia.isSelected() && !buttonFalta.isSelected()){
@@ -458,10 +455,12 @@ public void cargarTabla(){
     private javax.swing.JRadioButton buttonAsistencia;
     private javax.swing.JRadioButton buttonFalta;
     private javax.swing.ButtonGroup grupobotones;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSlider jSlider1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTable jtModificar;
     private javax.swing.JLabel labelHora;

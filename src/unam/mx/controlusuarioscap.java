@@ -77,7 +77,7 @@ public class controlusuarioscap extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jtAsistencia);
 
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/unam/imagenes/busqueda_icon.png"))); // NOI18N
-        btnBuscar.setText("Buscar Id");
+        btnBuscar.setText("Buscar Nombre");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBuscarActionPerformed(evt);

@@ -163,18 +163,19 @@ public class AltasCapturador extends javax.swing.JFrame {
     }
     
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        
+        java.sql.Date datesql = new java.sql.Date(date.getTime());
         PreparedStatement ps;
         ResultSet rs;
         
         try {
                 if(!"".equals(txtNombre.getText()) && !"".equals(txtApellido.getText())){
-                    ps = con.prepareStatement("INSERT INTO capturador (nombre, apellido, salario, estatus, password )VALUES (? , ?, ?, ?, ?)");
+                    ps = con.prepareStatement("INSERT INTO capturador (nombre, apellido, salario, estatus, password, fecha_actualizacion)VALUES (? , ?, ?, ?, ?, ?)");
                     ps.setString(1, txtNombre.getText().toUpperCase());
                     ps.setString(2, txtApellido.getText().toUpperCase());
                     ps.setFloat(3, (float) 3500.0);
                     ps.setBoolean(4,true );
                     ps. setString(5, getLastPass()+"_"+txtApellido.getText().toLowerCase());
+                    ps.setDate(6, datesql);
 
                     ps.executeUpdate();
                     JOptionPane.showMessageDialog(null, "Usuario Registrado \n Password:"+getLastPass()+"_"+txtApellido.getText().toLowerCase());
@@ -192,6 +193,7 @@ public class AltasCapturador extends javax.swing.JFrame {
                 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Usuario NO Registrado");
+            System.out.println("Error: "+e);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 

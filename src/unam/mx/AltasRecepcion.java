@@ -144,15 +144,17 @@ public class AltasRecepcion extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNombreActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-         PreparedStatement ps;
+        java.sql.Date datesql = new java.sql.Date(date.getTime());
+        PreparedStatement ps;
         ResultSet rs;
         try {
             if (!"".equals(txtNombre.getText()) && !"".equals(txtApellido.getText())) {
-                ps = con.prepareStatement("INSERT INTO recepcion (nombre, apellido, salario, estatus )VALUES (? , ?, ?, ?)");
+                ps = con.prepareStatement("INSERT INTO recepcion (nombre, apellido, salario, estatus,fecha_actualizacion )VALUES (? , ?, ?, ?,?)");
                 ps.setString(1, txtNombre.getText().toUpperCase());
                 ps.setString(2, txtApellido.getText().toUpperCase());
                 ps.setFloat(3, (float) 5000.0);
                 ps.setBoolean(4,true );
+                ps.setDate(5, datesql);
 
                 ps.executeUpdate();
                 JOptionPane.showMessageDialog(null, "Usuario Registrado");
@@ -164,10 +166,14 @@ public class AltasRecepcion extends javax.swing.JFrame {
                 
             }else{
                 JOptionPane.showMessageDialog(null, "Ingresa Datos Faltantes");
+                
             }
             
             
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Usuario No Registrado");
+            System.out.println("Error: "+e);
+            
         }
         
     }//GEN-LAST:event_btnRegistrarActionPerformed
